@@ -22,6 +22,11 @@
   </div>
 
   <div>
+    <%= form.label :publish_time, style: "display: block" %>
+    <%= form.datetime_local_field :publish_time %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

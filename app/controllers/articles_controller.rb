@@ -1,9 +1,15 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_author!, if: :author_signed_in?
+  before_action :authenticate_reader!, if: :reader_signed_in?
   before_action :set_article, only: %i[ show edit update destroy ]
-  before_action :authenticate_member!, only: %i[edit update destroy ]
   # GET /articles or /articles.json
   def index
-    @articles = Article.all
+    # binding.pry
+    if author_signed_in?
+      @articles = current_author.articles.all
+    elsif reader_signed_in?
+      @articles = Article.all
+    end
   end
 
   # GET /articles/1 or /articles/1.json
@@ -12,7 +18,7 @@ class ArticlesController < ApplicationController
 
   # GET /articles/new
   def new
-    @article = Article.new
+    @article = current_author.articles.new
   end
 
   # GET /articles/1/edit
@@ -21,7 +27,7 @@ class ArticlesController < ApplicationController
 
   # POST /articles or /articles.json
   def create
-    @article = Article.new(article_params)
+    @article = current_author.articles.new(article_params)
 
     respond_to do |format|
       if @article.save
@@ -60,11 +66,16 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.find(params[:id])
+      if author_signed_in?
+        @article = current_author.articles.find(params[:id])
+      elsif reader_signed_in?
+        @article = Article.find(params[:id])
+      end
     end
+
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :body)
+      params.require(:article).permit(:title, :body, :publish_time)
     end
 end

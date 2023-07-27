@@ -1,10 +1,16 @@
-<p style="color: green"><%= notice %></p>
-
 <%= render @article %>
+<br>
+<h3>Comments </h3>
+<%= render @article.comments %>
+<% if current_reader.blocked == false %>
+  <%= render partial: 'comments/form' %>
+<% end %>
+
 
 <div>
-  <%= link_to "Edit this article", edit_article_path(@article) %> |
+  <% if author_signed_in? %>
+    <%= link_to "Edit this article", edit_article_path(@article) %> 
+    <%= button_to "Destroy this article", @article, method: :delete %>
+  <% end %>
   <%= link_to "Back to articles", articles_path %>
-
-  <%= button_to "Destroy this article", @article, method: :delete %>
 </div>

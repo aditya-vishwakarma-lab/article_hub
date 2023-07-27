@@ -1,0 +1,11 @@
+<h3>Readers</h3>
+
+<div id="readers">
+  <% @readers.each do |reader| %>
+    <%= reader.email %>
+    <p>
+      <%= link_to "Edit this reader", edit_reader_path(reader) %>
+    </p>
+
+  <% end %>
+</div>

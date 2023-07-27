@@ -1,0 +1,30 @@
+<%= form_with(model: reader) do |form| %>
+  <% if reader.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(reader.errors.count, "error") %> prohibited this reader from being saved:</h2>
+
+      <ul>
+        <% reader.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div>
+    <%= form.radio_button :blocked, true %>
+    <%= form.label :blocked_true, "Reader is blocked " %>
+    <%= form.radio_button :blocked, false %>
+    <%= form.label :blocked_false, "Reader is not blocked" %>
+  </div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
