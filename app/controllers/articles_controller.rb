@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
     if author_signed_in?
       @articles = current_author.articles.all
     elsif reader_signed_in?
-      @articles = Article.all
+      @articles = Article.published
     end
   end
 
