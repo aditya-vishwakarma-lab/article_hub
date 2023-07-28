@@ -1,6 +1,7 @@
 class ReadersController < ApplicationController
 
   before_action :set_reader, only: %i[ edit update]
+  after_action :store_blocked_user, only: %i[update]
   def index
     @readers = Reader.all
   end
@@ -45,4 +46,7 @@ class ReadersController < ApplicationController
       params.require(:reader).permit(:email, :blocked)
     end
 
+    def store_blocked_user
+      StoreBlockedUserJob.perform_later @reader.blocked, @reader.email
+    end
 end
