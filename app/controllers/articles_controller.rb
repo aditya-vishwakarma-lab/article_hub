@@ -31,6 +31,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
+        publish_article
         format.html { redirect_to article_url(@article), notice: "Article was successfully created." }
         format.json { render :show, status: :created, location: @article }
       else
@@ -44,6 +45,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        publish_article
         format.html { redirect_to article_url(@article), notice: "Article was successfully updated." }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -77,5 +79,9 @@ class ArticlesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def article_params
       params.require(:article).permit(:title, :body, :publish_time)
+    end
+
+    def publish_article
+      PublishArticleJob.set(wait_until: @article.publish_time).perform_later(@article, @article.publish_time)
     end
 end

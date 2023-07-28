@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_162409) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_28_104109) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_162409) do
     t.datetime "updated_at", null: false
     t.integer "author_id", null: false
     t.datetime "publish_time"
+    t.boolean "published", default: false
     t.index ["author_id"], name: "index_articles_on_author_id"
   end
 
