@@ -1,5 +1,5 @@
 class PublishArticleJob < ApplicationJob
-  # self.queue_adapter = :sidekiq
+  self.queue_adapter = :sidekiq
   queue_as :default
 
   def perform(article,publish_time)
