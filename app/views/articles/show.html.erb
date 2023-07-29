@@ -1,9 +1,11 @@
 <%= render @article %>
 <br>
 <h3>Comments </h3>
-<%= render @article.comments %>
-<% if current_reader && current_reader.blocked == false %>
-  <%= render partial: 'comments/form' %>
+<% if current_reader %>
+  <%= render @article.comments %>
+  <% if current_reader.blocked == false %>
+    <%= render partial: 'comments/form' %>
+  <% end %>
 <% end %>
 
 
