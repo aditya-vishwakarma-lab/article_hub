@@ -1,18 +1,8 @@
 <div class="container">
-
-  <% if reader_signed_in? %>
+  <% if reader_signed_in? || author_signed_in?%>
   	<%= link_to 'Go to Articles', articles_path %>
-    <%= link_to 'Sign Out as Reader', destroy_reader_session_path, data: { turbo_method: :delete } %>
-  <% elsif author_signed_in?%>
-  	<%= link_to "Go to articles", articles_path %>
-    <%= link_to 'Sign Out as Author', destroy_author_session_path, data: { turbo_method: :delete } %> 
   <% elsif admin_signed_in?%>
   	<%= link_to 'Go to Dashboard', readers_path %>
-    <%= link_to 'Sign Out as Admin', destroy_admin_session_path, data: { turbo_method: :delete } %>
-  <% else %>
-    <%= link_to "Sign In as Reader", new_reader_session_path %>
-    <%= link_to "Sign In as Author", new_author_session_path %>
-    <%= link_to "Sign In as Admin", new_admin_session_path %>
   <% end %>  
   
 </div>
