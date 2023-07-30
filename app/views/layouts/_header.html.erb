@@ -1,63 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">ArticleHub</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">ArticleHub</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-    </ul>
-    <span class="navbar-login">
-      <% if reader_signed_in? %>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item mr-2">
-            <%= current_reader.email %>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Sign out as reader', destroy_reader_session_path, data: { turbo_method: :delete } %>
-          </li>
-        </ul>
-          <!-- <%= link_to 'Go to Articles', articles_path %> -->
-          
-          
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      </ul>
+      <span class="nav-login">
+        <% if reader_signed_in? %>
+          <%= current_reader.email %> | 
+          <%= link_to 'Sign out as reader', destroy_reader_session_path, data: { turbo_method: :delete } %>          
         <% elsif author_signed_in?%>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item mr-2">
-              <%= current_author.email %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'Sign out as author', destroy_author_session_path, data: { turbo_method: :delete } %> 
-            </li>
-          </ul>
-          <!-- <%= link_to "Go to articles", articles_path %> -->
-          
-          
+          <%= current_author.email %> | 
+          <%= link_to 'Sign out as author', destroy_author_session_path, data: { turbo_method: :delete } %> 
         <% elsif admin_signed_in?%>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item mr-2">
-              <%= current_admin.email %>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'Sign out as admin', destroy_admin_session_path, data: { turbo_method: :delete } %>
-            </li>
-          </ul>
-          <!-- <%= link_to 'Go to Dashboard', readers_path %> -->
-          
-          
+          <%= current_admin.email %> | 
+          <%= link_to 'Sign out as admin', destroy_admin_session_path, data: { turbo_method: :delete } %>
         <% else %>
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item mr-2">
-              <%= link_to "Sign in as reader", new_reader_session_path %>
-            </li>
-            <li class="nav-item mr-2">
-              <%= link_to "Sign in as author", new_author_session_path %>
-            </li>
-            <li class="nav-item mr-2">
-              <%= link_to "Sign in as admin", new_admin_session_path %>
-            </li>
-          </ul>
-          
+          <%= link_to "Sign in as reader", new_reader_session_path %> | 
+          <%= link_to "Sign in as author", new_author_session_path %> |
+          <%= link_to "Sign in as admin", new_admin_session_path %>
+            
         <% end %>
-    </span>
+      </span>
+    </div>
   </div>
 </nav>
