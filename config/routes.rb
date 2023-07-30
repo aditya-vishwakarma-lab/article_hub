@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :readers, path: '/admin/dashboard'
+  resources :readers, only: [:index, :edit, :update]
   get 'static_pages/landing_page'
   devise_for :admins
   devise_for :authors
@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
 
   resources :articles do
-    resources :comments
+    resources :comments, except: %i[show]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
