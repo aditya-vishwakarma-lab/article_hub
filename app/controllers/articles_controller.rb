@@ -1,15 +1,12 @@
 class ArticlesController < ApplicationController
-  before_action :authenticate_author!, if: :author_signed_in?
-  before_action :authenticate_reader!, if: :reader_signed_in?
+  load_and_authorize_resource
+  # before_action :authenticate_author!, if: :author_signed_in?
+  # before_action :authenticate_reader!, if: :reader_signed_in?
   before_action :set_article, only: %i[ show edit update destroy ]
   # GET /articles or /articles.json
   def index
     # binding.pry
-    if author_signed_in?
-      @articles = current_author.articles.all
-    elsif reader_signed_in?
-      @articles = Article.published
-    end
+    @articles = Article.published
   end
 
   # GET /articles/1 or /articles/1.json
@@ -68,11 +65,7 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      if author_signed_in?
-        @article = current_author.articles.find(params[:id])
-      elsif reader_signed_in?
-        @article = Article.find(params[:id])
-      end
+      @article = Article.find(params[:id])
     end
 
 
@@ -82,6 +75,9 @@ class ArticlesController < ApplicationController
     end
 
     def publish_article
-      PublishArticleJob.set(wait_until: @article.publish_time).perform_later(@article, @article.publish_time)
+      # Avoids queing job if the publish time has passed already
+      if DateTime.current < @article.publish_time
+        PublishArticleJob.set(wait_until: @article.publish_time).perform_later(@article, @article.publish_time)
+      end
     end
 end

@@ -1,17 +1,20 @@
 <%= render @article %>
+
 <br>
+
 <h3>Comments </h3>
-<% if current_reader %>
+<% if current_reader || current_author || current_admin %>
   <%= render @article.comments %>
-  <% if current_reader.blocked == false %>
-    <%= render partial: 'comments/form' %>
+  <% unless current_reader && (current_reader.blocked == true) %>
+    <%= render 'comments/form' %>
   <% end %>
 <% end %>
 
-
 <div>
-  <% if author_signed_in? %>
+  <% if can? :edit, @article %>
     <%= link_to "Edit this article", edit_article_path(@article) %> 
+  <% end %>
+  <% if can? :destroy, @article %>
     <%= button_to "Destroy this article", @article, method: :delete %>
   <% end %>
   <%= link_to "Back to articles", articles_path %>

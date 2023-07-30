@@ -1,8 +1,9 @@
-<div class="container">
-  <% if reader_signed_in? || author_signed_in?%>
-  	<%= link_to 'Go to Articles', articles_path %>
-  <% elsif admin_signed_in?%>
-  	<%= link_to 'Go to Dashboard', readers_path %>
-  <% end %>  
-  
-</div>
+<% if admin_signed_in?%>
+	<%= link_to 'Go to Readers', readers_path %> | 
+<% end %>
+
+<% if author_signed_in? || reader_signed_in? || admin_signed_in?%> 
+  <%= link_to 'Go to Articles', articles_path %>
+<% else %>
+	<p> Please Sign in to Access the Dashboard </p>
+<% end %>

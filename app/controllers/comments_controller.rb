@@ -1,8 +1,9 @@
 class CommentsController < ApplicationController
+  load_and_authorize_resource
   def create
     @article = Article.find(params[:article_id])
     @comment = @article.comments.new(comment_params)
-    @comment.commentable = current_reader
+    @comment.commentable = current_reader || current_author || current_admin
     # binding.pry
     # redirect_to article_path(@article)
     respond_to do |format|

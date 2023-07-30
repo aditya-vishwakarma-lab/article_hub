@@ -77,3 +77,5 @@ gem "devise", "~> 4.9"
 gem "pry-byebug", "~> 3.10"
 
 gem "sidekiq", "~> 7.1"
+
+gem "cancancan", "~> 3.5"
