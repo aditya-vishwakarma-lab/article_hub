@@ -4,18 +4,19 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user ||= User.new
     case user
     when Reader
+      can :search, Article
       can :read, Comment
       can :create, Comment unless user.blocked
       can :read, Article, published: true
     when Author
-      can :list_articles_by_author, Article
+      can :search, Article
       can [:read, :create], Comment
       can [:read, :create], Article
       can [:update, :destroy], Article, author: user
     when Admin
+      can :search, Article
       can [:read, :create], Comment
       can [:read, :update], Reader
       can :read, Article, published: true

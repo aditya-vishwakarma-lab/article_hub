@@ -7,7 +7,26 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <% if admin_signed_in? || author_signed_in? || reader_signed_in? %>
+            <a class="nav-link active" aria-current="page" href="/articles">Articles</a>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <% if admin_signed_in? %>
+            <a class="nav-link active" aria-current="page" href="/readers">Readers</a>
+          <% end %>
+        </li>
+        
+        
       </ul>
+      <% if controller_name == 'articles' %>
+        <div class="mx-2">
+          <%= render 'articles/search' %>
+        </div>
+        
+      <% end %>
+      
       <span class="nav-login">
         <% if reader_signed_in? %>
           <%= current_reader.email %> | 

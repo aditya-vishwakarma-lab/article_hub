@@ -7,8 +7,10 @@ Rails.application.routes.draw do
 
 
   resources :articles do
-    resources :comments, except: %i[show]
+    resources :comments, only: %i[create]
   end
+
+  get '/search', to: 'articles#search'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

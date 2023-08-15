@@ -9,6 +9,16 @@ class ArticlesController < ApplicationController
     @articles = Article.published
   end
 
+  def search
+    @articles = Article.published.where("title like ?", "%#{params[:query]}%")
+    authors = Author.where("email like ?", "%#{params[:query]}%")
+    authors.each do |author|
+      puts "author mail is #{author.email}"
+      @articles += author.articles
+    end
+    render 'articles/index'
+  end
+
   # GET /articles/1 or /articles/1.json
   def show
   end
@@ -76,7 +86,9 @@ class ArticlesController < ApplicationController
 
     def publish_article
       # Avoids queing job if the publish time has passed already
-      if DateTime.current < @article.publish_time
+      if (@article.publish_time).nil?
+        PublishArticleJob.perform_now(@article, @article.publish_time)
+      elsif DateTime.current < @article.publish_time
         PublishArticleJob.set(wait_until: @article.publish_time).perform_later(@article, @article.publish_time)
       end
     end
